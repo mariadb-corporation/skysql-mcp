@@ -1,9 +1,8 @@
 # SkySQL MCP Server
 
 [![Trust Score](https://archestra.ai/mcp-catalog/api/badge/quality/skysqlinc/skysql-mcp)](https://archestra.ai/mcp-catalog/skysqlinc__skysql-mcp)
-[![smithery badge](https://smithery.ai/badge/@skysqlinc/skysql-mcp)](https://smithery.ai/server/@skysqlinc/skysql-mcp)
 
-This package contains everything needed to set up the SkySQL MCP (Model Context Protocol) server, which provides a powerful interface for managing SkySQL (MySQL/MariaDB) database instances and interacting with SkyAI Agents.
+This package contains everything needed to set up the SkySQL/MariaDB Cloud MCP (Model Context Protocol) server, which provides a powerful interface for managing SkySQL MariaDB database instances and interacting with AI Agents.
 
 ## Features
 
@@ -17,7 +16,7 @@ This package contains everything needed to set up the SkySQL MCP (Model Context 
 
 #### Prerequisites
 - Python 3.10 or higher
-- A SkySQL API key
+- A SkySQL/MariaDB Cloud API key
 
 ### Option 1: Run locally
 
@@ -41,33 +40,51 @@ This package contains everything needed to set up the SkySQL MCP (Model Context 
    SKYSQL_API_KEY=<your_skysql_api_key_here>
    ```
 
-4. Use [MCP CLI tool](https://github.com/wong2/mcp-cli) to test the server interactively.
-   ```
-   npx @wong2/mcp-cli uv run python src/mcp-server/server.py
-   ```
-
-5. Configure in `Cursor.sh` manually
-
-   For Mac/Linux:
+4. Start the MCP server (HTTP mode):
    ```bash
    chmod +x launch.sh
+   ./launch.sh
    ```
-Update `mcp.json`:
-- command `"<full-path-to>/skysql-mcp/launch.sh"` for Mac/Linux and `"<full-path-to>\\skysql-mcp\\launch.bat"` for Windows.
-- `SKYSQL_API_KEY` with your SkySQL API key
+   The server will start on `http://localhost:8000/mcp` by default.
 
-Copy the `mcp.json` included in the repo to Cursor MCP Settings
+5. Configure your IDE:
 
-### Option 2: Installing via `Smithery.ai`
+#### Cursor
 
-You can use Smithery.ai to test the MCP server via their UI. Follow the installation instructions from [smithery.ai](https://smithery.ai/server/@skysqlinc/skysql-mcp) 
+Add the following to your Cursor MCP config (`~/.cursor/mcp.json` or `.cursor/mcp.json` in your project):
 
-For example, use the following command to install it in Cursor.sh IDE: 
-   ```bash
-   npx -y @smithery/cli@latest install @skysqlinc/skysql-mcp --client cursor --profile <your-smithery-profile> --key <your-smithery-kay>
+   ```json
+   {
+     "mcpServers": {
+       "skysql-mcp-server": {
+         "url": "http://localhost:8000/mcp",
+         "env": {
+           "SKYSQL_API_KEY": "<your-skysql-api-key>"
+         }
+       }
+     }
+   }
    ```
-For Windsurf:
 
+> Cursor supports passing `env` variables directly in the MCP config.
+
+#### Windsurf
+
+Add the following to your Windsurf MCP config (`~/.codeium/windsurf/mcp_config.json`):
+
+   ```json
+   {
+     "mcpServers": {
+       "skysql-mcp-server": {
+         "serverUrl": "http://localhost:8000/mcp"
+       }
+     }
+   }
+   ```
+
+> **Note:** Windsurf uses `serverUrl` (not `url`) and does not support the `env` parameter. Make sure `SKYSQL_API_KEY` is set in the `.env` file (step 3) or exported in your shell before starting the server.
+
+6. (Optional) Test the server interactively with [MCP CLI](https://github.com/wong2/mcp-cli):
    ```bash
-   npx -y @smithery/cli@latest install @skysqlinc/skysql-mcp --client windsurf --profile <your-smithery-profile> --key <your-smithery-key>
+   npx @wong2/mcp-cli uv run python src/mcp-server/server.py
    ```

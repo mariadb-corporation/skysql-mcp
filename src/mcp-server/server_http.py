@@ -42,7 +42,7 @@ if __name__ == "__main__":
         
         # FastMCP exposes the HTTP app via .http_app() method
         try:
-            app = mcp.http_app()
+            app = mcp.run(transport="http", host=host, port=port)
         except AttributeError:
             logger.error("FastMCP http_app method not found. FastMCP may not support HTTP transport in this version.")
             logger.error("Available attributes: " + ", ".join([attr for attr in dir(mcp) if not attr.startswith('_')]))
