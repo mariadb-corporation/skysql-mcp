@@ -6,5 +6,5 @@ python-dotenv>=1.0.0    # For loading environment variables from .env file
 logging>=0.4.9.6        # Enhanced logging capabilities
 typing-extensions>=4.5.0 # For advanced type hints
 asyncio==3.4.3
-PyMySQL==1.1.0
+PyMySQL==1.1.1
 uvicorn>=0.27.0         # ASGI server for HTTP transport mode 
