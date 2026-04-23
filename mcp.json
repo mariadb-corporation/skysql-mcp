@@ -1,8 +1,7 @@
 {
   "mcpServers": {
     "skysql-mcp-server": {
-      "command": "<full-path-to>/skysql-mcp/launch.sh",
-      "args": [],
+      "url": "http://localhost:8000/mcp",
       "env": {
         "SKYSQL_API_KEY": "<your-skysql-api-key>"
       }

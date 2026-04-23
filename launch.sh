@@ -28,5 +28,5 @@ if [ ! -f "uv.lock" ]; then
 fi
 
 # Start the MCP server
-echo "Starting MCP server..."
-uv run python src/mcp-server/server.py
+echo "Starting MCP server (HTTP mode)..."
+uv run python src/mcp-server/server_http.py
