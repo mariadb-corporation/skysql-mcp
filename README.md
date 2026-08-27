@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/skysqlinc-skysql-mcp-badge.png)](https://mseep.ai/app/skysqlinc-skysql-mcp)
+
 # SkySQL MCP Server
 
 [![Trust Score](https://archestra.ai/mcp-catalog/api/badge/quality/skysqlinc/skysql-mcp)](https://archestra.ai/mcp-catalog/skysqlinc__skysql-mcp)
