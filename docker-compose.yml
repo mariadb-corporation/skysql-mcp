@@ -1,0 +1,21 @@
+services:
+  skysql-mcp-server:
+    container_name: skysql-mcp-server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: skysql-mcp-server:latest
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - MCP_HOST=0.0.0.0
+      - MCP_PORT=8000
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 60s
+      timeout: 30s
+      start_period: 10s
+      retries: 3

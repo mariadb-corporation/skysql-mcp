@@ -2,8 +2,8 @@
   "mcpServers": {
     "skysql-mcp-server": {
       "url": "http://localhost:8000/mcp",
-      "env": {
-        "SKYSQL_API_KEY": "<your-skysql-api-key>"
+      "headers": {
+        "X-API-Key": "<your-skysql-api-key>"
       }
     }
   }
