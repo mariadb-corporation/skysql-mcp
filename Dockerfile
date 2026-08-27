@@ -1,5 +1,5 @@
 # Stage 1: Build dependencies
-FROM python:3.12-slim-bullseye as builder
+FROM python:3.13-slim-bookworm as builder
 
 # Set working directory
 WORKDIR /build
@@ -25,7 +25,7 @@ ENV PATH="/opt/venv/bin:$PATH"
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Stage 2: Runtime
-FROM python:3.12-slim-bullseye
+FROM python:3.13-slim-bookworm
 
 # Set working directory
 WORKDIR /app
@@ -56,8 +56,8 @@ USER mcp
 COPY --chown=mcp:mcp src/mcp-server /app/mcp-server
 
 # Health check using curl
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+HEALTHCHECK --interval=60s --timeout=30s --start-period=10s --retries=3 \
     CMD curl -f http://localhost:8000/health || exit 1
 
 # Command to run the application
-CMD ["python", "mcp-server/server.py"]
+CMD ["python", "mcp-server/server_http.py"]

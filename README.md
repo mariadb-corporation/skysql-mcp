@@ -58,15 +58,15 @@ Add the following to your Cursor MCP config (`~/.cursor/mcp.json` or `.cursor/mc
      "mcpServers": {
        "skysql-mcp-server": {
          "url": "http://localhost:8000/mcp",
-         "env": {
-           "SKYSQL_API_KEY": "<your-skysql-api-key>"
+         "headers": {
+           "X-API-Key": "<your-skysql-api-key>"
          }
        }
      }
    }
    ```
 
-> Cursor supports passing `env` variables directly in the MCP config.
+> The `X-API-Key` header is sent with each request, allowing per-user API keys when the server is hosted remotely.
 
 #### Windsurf
 
@@ -82,7 +82,35 @@ Add the following to your Windsurf MCP config (`~/.codeium/windsurf/mcp_config.j
    }
    ```
 
-> **Note:** Windsurf uses `serverUrl` (not `url`) and does not support the `env` parameter. Make sure `SKYSQL_API_KEY` is set in the `.env` file (step 3) or exported in your shell before starting the server.
+> **Note:** Windsurf uses `serverUrl` (not `url`) and cannot send request headers. Start the
+> server in single-tenant mode so it falls back to the API key in your environment:
+>
+> ```bash
+> SKYSQL_SINGLE_TENANT=true ./launch.sh
+> ```
+>
+> With `SKYSQL_API_KEY` set in `.env` (step 3). Without `SKYSQL_SINGLE_TENANT`, the server
+> requires every HTTP caller to supply its own `X-API-Key` header and will reject requests that
+> don't — deliberately, so a shared deployment can never serve requests using the operator's key.
+
+#### Claude
+
+Add the server as a custom connector (**Settings > Connectors > Add custom connector**), then supply
+your API key under **Request headers**:
+
+| Field | Value |
+| --- | --- |
+| URL | your deployed server URL, ending in `/mcp` |
+| Header name | `x-api-key` |
+| Header value | your SkySQL API key, with no prefix |
+| Required | yes |
+
+Generate the key at [app.skysql.com/user-profile/api-keys](https://app.skysql.com/user-profile/api-keys).
+Enter it exactly as-is — Claude sends the value verbatim and does not add a scheme or prefix.
+
+> Claude requires a publicly reachable **HTTPS** URL, so `http://localhost:8000/mcp` will not work
+> here; deploy the server first. Request header authentication is currently in beta and may need to
+> be enabled for your organization.
 
 6. (Optional) Test the server interactively with [MCP CLI](https://github.com/wong2/mcp-cli):
    ```bash
